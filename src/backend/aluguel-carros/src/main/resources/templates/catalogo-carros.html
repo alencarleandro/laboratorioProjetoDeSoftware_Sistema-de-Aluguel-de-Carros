@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo - Aluguel de Carros</title>
+    <link rel="stylesheet" href="../static/css/app-style.css" th:href="@{/css/app-style.css}">
+</head>
+
+<body>
+    <header class="app-header">
+        <div class="container">
+            <a href="#" th:href="@{/catalogo}" class="logo">AluguelCarros</a>
+            <nav>
+                <ul>
+                    <li><a href="#" th:href="@{/catalogo}" class="active">Catálogo</a></li>
+                    <li><a href="#" th:href="@{/meus-pedidos}">Meus Pedidos</a></li>
+                    <li><a href="#" th:href="@{/logout}">Sair</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <h1 class="page-title">Carros Disponíveis</h1>
+
+            <div class="catalog-grid">
+                <div class="car-card" th:each="carro : ${carros}">
+                    <img th:src="@{/images/{img}(img=${carro.imagem})}" src="../static/images/carro-exemplo.jpg" alt="Imagem do Carro">
+                    <div class="card-body">
+                        <h3 class="car-title" th:text="${carro.modelo}">Fiat Mobi</h3>
+                        <p class="car-details" th:text="|${carro.marca} - Ano ${carro.ano}|">Fiat - Ano 2023</p>
+                        <div class="price" th:text="|R$ ${#numbers.formatDecimal(carro.precoDiaria, 1, 'POINT', 2, 'COMMA')} / dia|">
+                            R$ 150,00 / dia
+                        </div>
+                        <a th:href="@{/pedidos/novo/{id}(id=${carro.id})}" class="btn-rent">Alugar Agora</a>
+                    </div>
+                </div>
+
+                <div class="car-card">
+                    <img src="../static/images/carro-exemplo.jpg" alt="Imagem do Carro">
+                    <div class="card-body">
+                        <h3 class="car-title">Hyundai HB20</h3>
+                        <p class="car-details">Hyundai - Ano 2024</p>
+                        <div class="price">R$ 180,00 / dia</div>
+                        <a href="#" class="btn-rent">Alugar Agora</a>
+                    </div>
+                </div>
+
+                <div class="car-card">
+                    <img src="../static/images/carro-exemplo.jpg" alt="Imagem do Carro">
+                    <div class="card-body">
+                        <h3 class="car-title">Chevrolet Onix</h3>
+                        <p class="car-details">Chevrolet - Ano 2023</p>
+                        <div class="price">R$ 175,00 / dia</div>
+                        <a href="#" class="btn-rent">Alugar Agora</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+</body>
+</html>

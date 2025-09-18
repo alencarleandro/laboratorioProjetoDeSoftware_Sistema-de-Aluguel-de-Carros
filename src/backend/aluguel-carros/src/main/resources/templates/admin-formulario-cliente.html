@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:block th:if="${cliente.id == null}">Adicionar Cliente</title>
+    <title th:block th:if="${cliente.id != null}">Editar Cliente</title>
+    
+    <link rel="stylesheet" href="../static/css/admin-style.css" th:href="@{/css/admin-style.css}">
+</head>
+
+<body>
+    <header class="admin-header">
+        <div class="container">
+            <h1>Painel Administrativo</h1>
+            <nav>
+                <a th:href="@{/logout}">Sair</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="page-header">
+                <h2 th:if="${cliente.id == null}">Adicionar Novo Cliente</h2>
+                <h2 th:if="${cliente.id != null}" th:text="|Editar Cliente: ${cliente.nome}|">Editar Cliente</h2>
+            </div>
+
+            <div class="content-card">
+                <form th:action="@{/admin/clientes/salvar}" th:object="${cliente}" method="post">
+                    
+                    <input type="hidden" th:field="*{id}" />
+
+                    <div class="form-group">
+                        <label for="nome">Nome Completo:</label>
+                        <input type="text" id="nome" th:field="*{nome}" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" th:field="*{email}" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="senha">Senha:</label>
+                        <input type="password" id="senha" th:field="*{senha}" placeholder="Deixe em branco para não alterar">
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Salvar</button>
+                        <a th:href="@{/admin/gestao-clientes}" class="btn btn-secondary">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+</body>
+</html>
