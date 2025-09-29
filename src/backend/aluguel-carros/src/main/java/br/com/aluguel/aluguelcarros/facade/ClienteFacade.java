@@ -27,9 +27,10 @@ public class ClienteFacade {
         Usuario usuarioSalvo = clienteService.criar(usuario);
 
         return new ClienteResponseDTO(
-            usuarioSalvo.getId(), 
+            usuarioSalvo.getId(),
             usuarioSalvo.getNome(), 
-            usuarioSalvo.getCpf(), 
+            usuarioSalvo.getSenha(),
+            usuarioSalvo.getCpf(),
             usuarioSalvo.getRg(), 
             usuarioSalvo.getEmail()
         );
@@ -37,12 +38,18 @@ public class ClienteFacade {
     
     public ClienteResponseDTO buscarPorId(Long id) {
         Usuario usuario = clienteService.buscarPorId(id);
-        return new ClienteResponseDTO(usuario.getId(), usuario.getNome(), usuario.getCpf(), usuario.getRg(), usuario.getEmail());
+        return new ClienteResponseDTO(usuario.getId(), usuario.getNome(), usuario.getSenha(), usuario.getCpf(), usuario.getRg(), usuario.getEmail());
+    }
+
+
+    public ClienteResponseDTO buscarPorEmail(String email) {
+        Usuario usuario = clienteService.buscarPorEmail(email);
+        return new ClienteResponseDTO(usuario.getId(), usuario.getNome(), usuario.getSenha(), usuario.getCpf(), usuario.getRg(), usuario.getEmail());
     }
 
     public List<ClienteResponseDTO> listarTodos() {
         return clienteService.listarTodos().stream()
-                .map(u -> new ClienteResponseDTO(u.getId(), u.getNome(), u.getCpf(), u.getRg(), u.getEmail()))
+                .map(u -> new ClienteResponseDTO(u.getId(), u.getNome(), u.getSenha(), u.getCpf(), u.getRg(), u.getEmail()))
                 .collect(Collectors.toList());
     }
     
