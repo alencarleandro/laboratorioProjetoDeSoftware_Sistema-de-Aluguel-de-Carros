@@ -37,10 +37,16 @@ public class ClienteService {
                 .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
     }
 
+    public Usuario buscarPorEmail(String email) {
+        return usuarioRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Cliente não encontrado com o email: " + email));
+    }
+
     @Transactional(readOnly = true)
     public List<Usuario> listarTodos() {
         return usuarioRepository.findAll();
     }
+
 
     @Transactional
     public Usuario atualizar(Long id, Usuario dadosAtualizados) {
