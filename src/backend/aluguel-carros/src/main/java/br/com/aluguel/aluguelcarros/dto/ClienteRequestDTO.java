@@ -5,13 +5,13 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 public record ClienteRequestDTO(
-        @NotBlank(message = "O nome não pode ser vazio")
+
         String nome,
 
-        @NotBlank
+
         String rg,
         
-        @NotBlank
+
         String cpf,
 
         @NotBlank @Email(message = "O e-mail deve ser válido")

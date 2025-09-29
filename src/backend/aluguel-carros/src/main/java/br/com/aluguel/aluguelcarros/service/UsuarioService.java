@@ -25,6 +25,7 @@ public class UsuarioService {
         this.pedidosDeAluguelRepository = pedidosDeAluguelRepository;
     }
 
+
     @Transactional
     public Usuario criar(Usuario usuario) {
         if (usuarioRepository.findByEmail(usuario.getEmail()).isPresent()) {
