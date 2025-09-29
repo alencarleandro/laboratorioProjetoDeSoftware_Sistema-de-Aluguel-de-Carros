@@ -23,14 +23,14 @@ public class AdminController {
 
     @GetMapping("/clientes/novo")
     public String novoCliente(Model model) {
-        model.addAttribute("usuario", new Usuario()); // Usando Usuario
+        model.addAttribute("cliente", new Usuario());
         return "admin/form-cliente";
     }
 
     @GetMapping("/clientes/editar/{id}")
     public String editarCliente(@PathVariable Long id, Model model) {
-        model.addAttribute("usuario", usuarioService.buscarPorId(id)); // Usando Usuario
-        return "admin/form-cliente";
+        model.addAttribute("cliente", usuarioService.buscarPorId(id));
+        return "admin/form-cliente"; // sem redirect
     }
 
     @PostMapping("/clientes/salvar")

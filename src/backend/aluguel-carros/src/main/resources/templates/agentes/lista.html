@@ -21,8 +21,6 @@
             <tr>
                 <th>ID</th>
                 <th>Nome</th>
-                <th>CNPJ</th>
-                <th>Tipo</th>
                 <th>Ações</th>
             </tr>
             </thead>
@@ -30,8 +28,6 @@
             <tr th:each="agente : ${agentes}">
                 <td th:text="${agente.id}">1</td>
                 <td th:text="${agente.nome}">Nome do Agente</td>
-                <td th:text="${agente.cnpj}">00.000.000/0001-00</td>
-                <td th:text="${agente.tipo}">Banco</td>
                 <td>
                     <a th:href="@{/agentes/editar/{id}(id=${agente.id})}" class="btn btn-sm btn-warning">Editar</a>
                     <a th:href="@{/agentes/deletar/{id}(id=${agente.id})}"
@@ -40,7 +36,7 @@
                 </td>
             </tr>
             <tr th:if="${agentes.isEmpty()}">
-                <td colspan="5" class="text-center">Nenhum agente cadastrado.</td>
+                <td colspan="3" class="text-center">Nenhum agente cadastrado.</td>
             </tr>
             </tbody>
         </table>

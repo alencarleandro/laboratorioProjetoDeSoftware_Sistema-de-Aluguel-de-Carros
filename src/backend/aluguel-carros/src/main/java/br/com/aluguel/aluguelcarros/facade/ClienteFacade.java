@@ -17,10 +17,6 @@ public class ClienteFacade {
     @Autowired
     private UsuarioService usuarioService;
 
-    // 2. Injete o PasswordEncoder
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
     public ClienteResponseDTO criar(ClienteRequestDTO requestDTO) {
         Usuario usuario = new Usuario();
         usuario.setNome(requestDTO.nome());
@@ -47,17 +43,17 @@ public class ClienteFacade {
     // ... o restante dos seus métodos está perfeito ...
     public ClienteResponseDTO buscarPorId(Long id) {
         Usuario usuario = usuarioService.buscarPorId(id);
-        return new ClienteResponseDTO(usuario.getId(), usuario.getNome(), null, usuario.getCpf(), usuario.getRg(), usuario.getEmail());
+        return new ClienteResponseDTO(usuario.getId(), usuario.getNome(), usuario.getSenha(), usuario.getCpf(), usuario.getRg(), usuario.getEmail());
     }
 
     public ClienteResponseDTO buscarPorEmail(String email) {
         Usuario usuario = usuarioService.buscarPorEmail(email);
-        return new ClienteResponseDTO(usuario.getId(), usuario.getNome(), null, usuario.getCpf(), usuario.getRg(), usuario.getEmail());
+        return new ClienteResponseDTO(usuario.getId(), usuario.getNome(), usuario.getSenha(), usuario.getCpf(), usuario.getRg(), usuario.getEmail());
     }
 
     public List<ClienteResponseDTO> listarTodos() {
         return usuarioService.listarTodos().stream()
-                .map(u -> new ClienteResponseDTO(u.getId(), u.getNome(), null, u.getCpf(), u.getRg(), u.getEmail()))
+                .map(u -> new ClienteResponseDTO(u.getId(), u.getNome(), u.getSenha(), u.getCpf(), u.getRg(), u.getEmail()))
                 .collect(Collectors.toList());
     }
 

@@ -1,6 +1,8 @@
 package br.com.aluguel.aluguelcarros.service;
 
+import br.com.aluguel.aluguelcarros.model.PedidosDeAluguel;
 import br.com.aluguel.aluguelcarros.model.Usuario;
+import br.com.aluguel.aluguelcarros.repository.PedidosDeAluguelRepository;
 import br.com.aluguel.aluguelcarros.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -13,12 +15,14 @@ import java.util.List;
 public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
-    private final PasswordEncoder passwordEncoder;
+    private final PedidosDeAluguelRepository pedidosDeAluguelRepository;
 
     @Autowired
-    public UsuarioService(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder) {
+    public UsuarioService(UsuarioRepository usuarioRepository,
+                          PedidosDeAluguelRepository pedidosDeAluguelRepository,
+                          PasswordEncoder passwordEncoder) {
         this.usuarioRepository = usuarioRepository;
-        this.passwordEncoder = passwordEncoder;
+        this.pedidosDeAluguelRepository = pedidosDeAluguelRepository;
     }
 
     @Transactional
@@ -26,7 +30,7 @@ public class UsuarioService {
         if (usuarioRepository.findByEmail(usuario.getEmail()).isPresent()) {
             throw new RuntimeException("E-mail já cadastrado.");
         }
-        usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
+        usuario.setSenha(usuario.getSenha());
         return usuarioRepository.save(usuario);
     }
 
@@ -58,6 +62,10 @@ public class UsuarioService {
     @Transactional
     public void deletar(Long id) {
         Usuario usuarioExistente = buscarPorId(id);
+
+        for(PedidosDeAluguel p : pedidosDeAluguelRepository.findByUsuarioEmail(usuarioExistente.getEmail()))
+            pedidosDeAluguelRepository.delete(p);
+
         usuarioRepository.delete(usuarioExistente);
     }
 }

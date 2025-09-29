@@ -9,6 +9,7 @@
 <main class="container mt-4">
     <h1 class="mb-4">Gestão de Pedidos de Aluguel</h1>
 
+    <!-- Mensagens de feedback -->
     <div th:if="${successMessage}" class="alert alert-success" role="alert" th:text="${successMessage}"></div>
     <div th:if="${errorMessage}" class="alert alert-danger" role="alert" th:text="${errorMessage}"></div>
 
@@ -20,31 +21,50 @@
                 <th>Cliente</th>
                 <th>Veículo</th>
                 <th>Status</th>
-                <th>Ações</th>
+                <th class="text-center">Ações</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="pedido : ${pedidos}">
                 <td th:text="${pedido.id}">101</td>
-                <td th:text="${pedido.cliente.nome}">Nome do Cliente</td>
+                <td th:text="${pedido.usuario.nome}">Nome do Cliente</td>
                 <td th:text="${pedido.automovel.marca + ' ' + pedido.automovel.modelo}">Marca e Modelo</td>
                 <td>
                     <span th:text="${pedido.status}"
-                          th:classappend="${pedido.status == 'APROVADO'} ? 'text-success' : (${pedido.status == 'REJEITADO'} ? 'text-danger' : 'text-warning')"
+                          th:classappend="${pedido.status == T(br.com.aluguel.aluguelcarros.model.StatusPedido).APROVADO} ? 'text-success'
+                                          : (${pedido.status == T(br.com.aluguel.aluguelcarros.model.StatusPedido).REJEITADO} ? 'text-danger'
+                                          : (${pedido.status == T(br.com.aluguel.aluguelcarros.model.StatusPedido).CANCELADO} ? 'text-secondary' : 'text-warning'))"
                           class="fw-bold">
                         EM ANÁLISE
                     </span>
                 </td>
-                <td>
-                    <div th:if="${pedido.status == 'EM ANÁLISE'}">
-                        <a th:href="@{/pedidos-aluguel/aprovar/{id}(id=${pedido.id})}" class="btn btn-sm btn-success">Aprovar</a>
-                        <a th:href="@{/pedidos-aluguel/rejeitar/{id}(id=${pedido.id})}" class="btn btn-sm btn-danger">Rejeitar</a>
-                    </div>
-                    <div th:if="${pedido.status == 'APROVADO'}">
-                        <a th:href="@{/pedidos-aluguel/cancelar/{id}(id=${pedido.id})}" class="btn btn-sm btn-secondary">Cancelar</a>
-                    </div>
+                <td class="text-center">
+
+                    <!-- Botão Aprovar -->
+                    <a th:href="@{/pedidos/aprovar/{id}(id=${pedido.id})}"
+                       class="btn btn-sm btn-success me-1"
+                       th:classappend="${pedido.status != T(br.com.aluguel.aluguelcarros.model.StatusPedido).PENDENTE} ? ' disabled'">
+                        ✅ Aprovar
+                    </a>
+
+                    <!-- Botão Rejeitar -->
+                    <a th:href="@{/pedidos/rejeitar/{id}(id=${pedido.id})}"
+                       class="btn btn-sm btn-danger me-1"
+                       th:classappend="${pedido.status != T(br.com.aluguel.aluguelcarros.model.StatusPedido).PENDENTE} ? ' disabled'">
+                        ❌ Rejeitar
+                    </a>
+
+                    <!-- Botão Cancelar -->
+                    <a th:href="@{/pedidos/cancelar-admin/{id}(id=${pedido.id})}"
+                       class="btn btn-sm btn-secondary"
+                       th:classappend="${pedido.status != T(br.com.aluguel.aluguelcarros.model.StatusPedido).APROVADO} ? ' disabled'">
+                        ⛔ Cancelar
+                    </a>
+
                 </td>
             </tr>
+
+            <!-- Caso não haja pedidos -->
             <tr th:if="${pedidos.isEmpty()}">
                 <td colspan="5" class="text-center">Nenhum pedido encontrado.</td>
             </tr>
