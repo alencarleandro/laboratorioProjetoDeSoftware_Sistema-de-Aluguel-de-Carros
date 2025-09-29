@@ -29,8 +29,7 @@ public class ClienteFacade {
         usuario.setRg(requestDTO.rg());
 
         // 3. AQUI ESTÁ A MUDANÇA CRÍTICA: Criptografe a senha antes de salvar
-        String senhaCriptografada = passwordEncoder.encode(requestDTO.senha());
-        usuario.setSenha(senhaCriptografada);
+        usuario.setSenha(requestDTO.senha());
 
         Usuario usuarioSalvo = usuarioService.criar(usuario);
 
