@@ -1,6 +1,7 @@
 package br.com.aluguel.aluguelcarros.service;
 
 import br.com.aluguel.aluguelcarros.model.PedidosDeAluguel;
+import br.com.aluguel.aluguelcarros.model.StatusPedido;
 import br.com.aluguel.aluguelcarros.repository.PedidosDeAluguelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,7 @@ public class PedidosDeAluguelService {
 
     @Transactional
     public PedidosDeAluguel criar(PedidosDeAluguel pedido) {
+        pedido.setStatus(StatusPedido.PENDENTE); // todo pedido novo começa pendente
         return pedidosDeAluguelRepository.save(pedido);
     }
 
@@ -49,5 +51,29 @@ public class PedidosDeAluguelService {
     public void deletar(Long id) {
         PedidosDeAluguel pedidoExistente = buscarPorId(id);
         pedidosDeAluguelRepository.delete(pedidoExistente);
+    }
+
+    // =============================
+    // 🔽 Métodos novos (status)
+    // =============================
+    @Transactional
+    public PedidosDeAluguel aprovar(Long id) {
+        PedidosDeAluguel pedido = buscarPorId(id);
+        pedido.setStatus(StatusPedido.APROVADO);
+        return pedidosDeAluguelRepository.save(pedido);
+    }
+
+    @Transactional
+    public PedidosDeAluguel rejeitar(Long id) {
+        PedidosDeAluguel pedido = buscarPorId(id);
+        pedido.setStatus(StatusPedido.REJEITADO);
+        return pedidosDeAluguelRepository.save(pedido);
+    }
+
+    @Transactional
+    public PedidosDeAluguel cancelar(Long id) {
+        PedidosDeAluguel pedido = buscarPorId(id);
+        pedido.setStatus(StatusPedido.CANCELADO);
+        return pedidosDeAluguelRepository.save(pedido);
     }
 }

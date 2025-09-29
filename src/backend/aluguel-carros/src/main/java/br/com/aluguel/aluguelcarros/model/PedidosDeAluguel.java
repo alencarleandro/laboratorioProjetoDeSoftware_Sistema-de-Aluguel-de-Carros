@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity(name = "PedidosDeAluguel")
@@ -23,8 +22,13 @@ public class PedidosDeAluguel {
 
     @Column(name = "preco")
     private float preco;
+
     @Column(name = "dataEmissao")
     private LocalDateTime dataEmissao;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
+    private StatusPedido status = StatusPedido.PENDENTE;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "usuario_id")
@@ -38,10 +42,7 @@ public class PedidosDeAluguel {
     @JoinColumn(name = "automovel_id")
     private Automovel automovel;
 
-
-    public boolean valido(){
+    public boolean valido() {
         return true;
     }
-
-
 }

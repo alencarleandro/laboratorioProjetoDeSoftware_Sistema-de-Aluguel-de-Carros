@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+
+<div th:replace="~{fragments/header :: head('Gestão de Pedidos de Aluguel')}"></div>
+
+<body>
+<div th:replace="~{fragments/header :: nav}"></div>
+
+<main class="container mt-4">
+    <h1 class="mb-4">Gestão de Pedidos de Aluguel</h1>
+
+    <div th:if="${successMessage}" class="alert alert-success" role="alert" th:text="${successMessage}"></div>
+    <div th:if="${errorMessage}" class="alert alert-danger" role="alert" th:text="${errorMessage}"></div>
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead class="table-light">
+            <tr>
+                <th>ID Pedido</th>
+                <th>Cliente</th>
+                <th>Veículo</th>
+                <th>Status</th>
+                <th>Ações</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="pedido : ${pedidos}">
+                <td th:text="${pedido.id}">101</td>
+                <td th:text="${pedido.cliente.nome}">Nome do Cliente</td>
+                <td th:text="${pedido.automovel.marca + ' ' + pedido.automovel.modelo}">Marca e Modelo</td>
+                <td>
+                    <span th:text="${pedido.status}"
+                          th:classappend="${pedido.status == 'APROVADO'} ? 'text-success' : (${pedido.status == 'REJEITADO'} ? 'text-danger' : 'text-warning')"
+                          class="fw-bold">
+                        EM ANÁLISE
+                    </span>
+                </td>
+                <td>
+                    <div th:if="${pedido.status == 'EM ANÁLISE'}">
+                        <a th:href="@{/pedidos-aluguel/aprovar/{id}(id=${pedido.id})}" class="btn btn-sm btn-success">Aprovar</a>
+                        <a th:href="@{/pedidos-aluguel/rejeitar/{id}(id=${pedido.id})}" class="btn btn-sm btn-danger">Rejeitar</a>
+                    </div>
+                    <div th:if="${pedido.status == 'APROVADO'}">
+                        <a th:href="@{/pedidos-aluguel/cancelar/{id}(id=${pedido.id})}" class="btn btn-sm btn-secondary">Cancelar</a>
+                    </div>
+                </td>
+            </tr>
+            <tr th:if="${pedidos.isEmpty()}">
+                <td colspan="5" class="text-center">Nenhum pedido encontrado.</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+<div th:replace="~{fragments/footer :: scripts}"></div>
+</body>
+</html>

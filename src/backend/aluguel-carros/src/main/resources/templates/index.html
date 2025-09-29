@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+
+<div th:replace="~{fragments/header :: head('Bem-vindo')}"></div>
+
+<body>
+<div th:replace="~{fragments/header :: nav}"></div>
+
+<main class="container text-center mt-5">
+    <div class="p-5 mb-4 bg-light rounded-3">
+        <div class="container-fluid py-5">
+            <h1 class="display-5 fw-bold">O carro dos seus sonhos, a um clique de distância.</h1>
+            <p class="col-md-8 fs-4 mx-auto">Explore nosso catálogo completo e encontre o veículo perfeito para sua necessidade. Processo de aluguel simples, rápido e seguro.</p>
+            <a class="btn btn-primary btn-lg" th:href="@{/catalogo-carros}" role="button">Ver Catálogo</a>
+        </div>
+    </div>
+</main>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+<div th:replace="~{fragments/footer :: scripts}"></div>
+</body>
+</html>

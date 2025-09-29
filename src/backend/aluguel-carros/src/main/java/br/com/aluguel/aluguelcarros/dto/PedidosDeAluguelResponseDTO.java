@@ -1,12 +1,11 @@
-package br.com.aluguel.aluguelcarros.dto;
-
-import java.time.LocalDateTime;
-
-public record PedidosDeAluguelResponseDTO(
-    Long id,
-    float preco,
-    LocalDateTime dataEmissao,
-    Long usuarioId,
-    Long agenteId,
-    Long automovelId
-) {}
+private PedidosDeAluguelResponseDTO toResponseDTO(PedidosDeAluguel pedido) {
+    return new PedidosDeAluguelResponseDTO(
+            pedido.getId(),
+            pedido.getPreco(),
+            pedido.getDataEmissao(),
+            pedido.getStatus(),
+            pedido.getUsuario() != null ? pedido.getUsuario().getId() : null,
+            pedido.getAgente() != null ? pedido.getAgente().getId() : null,
+            pedido.getAutomovel() != null ? pedido.getAutomovel().getId() : null
+    );
+}

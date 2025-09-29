@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+
+<div th:replace="~{fragments/header :: head('Formulário de Veículo')}"></div>
+
+<body>
+<div th:replace="~{fragments/header :: nav}"></div>
+
+<main class="container mt-4">
+    <h1 th:text="${automovel.id == null ? 'Adicionar Novo Veículo' : 'Editar Veículo'}">Formulário de Veículo</h1>
+    <p class="lead">Use o formulário abaixo para gerenciar os dados de um veículo da frota.</p>
+
+    <form th:object="${automovel}"
+          th:action="${automovel.id == null} ? @{/automoveis} : @{/automoveis/atualizar/{id}(id=${automovel.id})}"
+          method="post">
+
+        <input type="hidden" th:field="*{id}"/>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="marca" class="form-label">Marca</label>
+                <input type="text" class="form-control" id="marca" th:field="*{marca}" required>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="modelo" class="form-label">Modelo</label>
+                <input type="text" class="form-control" id="modelo" th:field="*{modelo}" required>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="ano" class="form-label">Ano</label>
+                <input type="number" class="form-control" id="ano" th:field="*{ano}" required>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="placa" class="form-label">Placa</label>
+                <input type="text" class="form-control" id="placa" th:field="*{placa}" required>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-success">Salvar</button>
+        <a th:href="@{/automoveis}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</main>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+<div th:replace="~{fragments/footer :: scripts}"></div>
+</body>
+</html>

@@ -1,94 +1,62 @@
 package br.com.aluguel.aluguelcarros.controller;
 
-import br.com.aluguel.aluguelcarros.model.Agente;
-import br.com.aluguel.aluguelcarros.model.Automovel;
-import br.com.aluguel.aluguelcarros.service.AgenteService;
-import br.com.aluguel.aluguelcarros.service.AutomovelService;
+import br.com.aluguel.aluguelcarros.model.Cliente;
+import br.com.aluguel.aluguelcarros.service.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-/**
- * Controller para operações administrativas
- * Centraliza funcionalidades de administração do sistema
- */
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
 
     @Autowired
-    private AgenteService agenteService;
+    private ClienteService clienteService;
 
-    @Autowired
-    private AutomovelService automovelService;
-
-    /**
-     * Dashboard administrativo principal
-     * Acesso: Administradores
-     */
-    @GetMapping
-    public String dashboard(Model model) {
-        // TODO: Implementar estatísticas do sistema
-        model.addAttribute("totalAgentes", agenteService.listarTodos().size());
-        model.addAttribute("totalAutomoveis", automovelService.listarTodos().size());
-        return "admin/dashboard";
+    // 1️⃣ Lista todos os clientes
+    @GetMapping("/gestao-clientes")
+    public String listarClientes(Model model) {
+        model.addAttribute("clientes", clienteService.listarTodos());
+        return "admin/gestao-clientes"; // Página HTML com a tabela
     }
 
-    /**
-     * Lista todos os agentes para seleção em formulários
-     * Usado principalmente para popular dropdowns
-     */
-    @GetMapping("/agentes")
-    @ResponseBody
-    public Object listarAgentesParaSelect() {
-        return agenteService.listarTodos();
+    // 2️⃣ Página de adicionar cliente
+    @GetMapping("/clientes/novo")
+    public String novoCliente(Model model) {
+        model.addAttribute("cliente", new Cliente());
+        return "admin/form-cliente"; // Página que você mostrou
     }
 
-    /**
-     * Lista todos os automóveis para seleção em formulários
-     * Usado principalmente para popular dropdowns
-     */
-    @GetMapping("/automoveis")
-    @ResponseBody
-    public Object listarAutomoveisParaSelect() {
-        return automovelService.listarTodos();
+    // 3️⃣ Página de editar cliente
+    @GetMapping("/clientes/editar/{id}")
+    public String editarCliente(@PathVariable Long id, Model model) {
+        model.addAttribute("cliente", clienteService.buscarPorId(id));
+        return "admin/form-cliente"; // Mesma página que adicionar, com dados preenchidos
     }
 
-    /**
-     * Atualiza status de disponibilidade de um automóvel
-     * Acesso: Administradores
-     */
-    @PostMapping("/automoveis/{id}/status")
-    public String atualizarStatusAutomovel(@PathVariable Long id, 
-                                         @RequestParam String status,
-                                         RedirectAttributes redirectAttributes) {
+    // 4️⃣ Salvar cliente (novo ou editar)
+    @PostMapping("/clientes/salvar")
+    public String salvarCliente(@ModelAttribute Cliente cliente, RedirectAttributes redirectAttributes) {
         try {
-            // TODO: Implementar lógica de atualização de status
-            redirectAttributes.addFlashAttribute("successMessage", "Status do veículo atualizado!");
+            clienteService.salvar(cliente);
+            redirectAttributes.addFlashAttribute("successMessage", "Cliente salvo com sucesso!");
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("errorMessage", "Erro ao atualizar status: " + e.getMessage());
+            redirectAttributes.addFlashAttribute("errorMessage", "Erro ao salvar cliente: " + e.getMessage());
         }
-        return "redirect:/automoveis";
+        return "redirect:/admin/gestao-clientes";
     }
 
-    /**
-     * Relatórios administrativos
-     * Acesso: Administradores
-     */
-    @GetMapping("/relatorios")
-    public String relatorios(Model model) {
-        // TODO: Implementar relatórios
-        return "admin/relatorios";
-    }
-
-    /**
-     * Configurações do sistema
-     * Acesso: Administradores
-     */
-    @GetMapping("/configuracoes")
-    public String configuracoes() {
-        return "admin/configuracoes";
+    // 5️⃣ Excluir cliente
+    @GetMapping("/clientes/excluir/{id}")
+    public String excluirCliente(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        try {
+            clienteService.excluir(id);
+            redirectAttributes.addFlashAttribute("successMessage", "Cliente excluído com sucesso!");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Erro ao excluir cliente: " + e.getMessage());
+        }
+        return "redirect:/admin/gestao-clientes";
     }
 }

@@ -45,22 +45,4 @@ public class HomeController {
     public String meusPedidos() {
         return "meus-pedidos";
     }
-
-    /**
-     * Gestão de clientes (painel administrativo)
-     * Acesso: Administradores
-     */
-    @GetMapping("/admin-gestao-clientes")
-    public String adminGestaoClientes() {
-        return "admin-gestao-clientes";
-    }
-
-    /**
-     * Formulário de cliente (painel administrativo)
-     * Acesso: Administradores
-     */
-    @GetMapping("/admin-formulario-cliente")
-    public String adminFormularioCliente() {
-        return "admin-formulario-cliente";
-    }
 }
