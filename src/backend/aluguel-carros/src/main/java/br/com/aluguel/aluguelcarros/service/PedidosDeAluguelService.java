@@ -1,5 +1,6 @@
 package br.com.aluguel.aluguelcarros.service;
 
+import br.com.aluguel.aluguelcarros.dto.PedidosDeAluguelRequestDTO;
 import br.com.aluguel.aluguelcarros.model.Automovel;
 import br.com.aluguel.aluguelcarros.model.PedidosDeAluguel;
 import br.com.aluguel.aluguelcarros.model.StatusPedido;
@@ -12,17 +13,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 public class PedidosDeAluguelService {
 
-    // DEPENDÊNCIAS DO SERVIÇO
     private final PedidosDeAluguelRepository pedidosDeAluguelRepository;
     private final UsuarioRepository usuarioRepository;
     private final AutomovelRepository automovelRepository;
 
-    // CONSTRUTOR ATUALIZADO PARA INJETAR TODAS AS DEPENDÊNCIAS
     @Autowired
     public PedidosDeAluguelService(PedidosDeAluguelRepository pedidosDeAluguelRepository,
                                    UsuarioRepository usuarioRepository,
@@ -32,9 +32,6 @@ public class PedidosDeAluguelService {
         this.automovelRepository = automovelRepository;
     }
 
-    // =======================================================
-    // NOVO MÉTODO PARA CRIAR O PEDIDO (orquestração)
-    // =======================================================
     @Transactional
     public PedidosDeAluguel criarPedido(String emailCliente, Long automovelId, String dataInicio, String dataFim) {
         Usuario cliente = usuarioRepository.findByEmail(emailCliente)
@@ -47,20 +44,16 @@ public class PedidosDeAluguelService {
         novoPedido.setAutomovel(automovel);
         novoPedido.setDataInicio(LocalDate.parse(dataInicio));
         novoPedido.setDataFim(LocalDate.parse(dataFim));
-        novoPedido.setDataEmissao(LocalDate.now()); // Adiciona a data de hoje como data de emissão
-        novoPedido.setStatus(StatusPedido.PENDENTE); // Ou o status inicial que você preferir
+        novoPedido.setDataEmissao(LocalDateTime.now());
+        novoPedido.setStatus(StatusPedido.PENDENTE);
 
         return pedidosDeAluguelRepository.save(novoPedido);
     }
 
-    // =======================================================
-    // NOVO MÉTODO PARA BUSCAR PEDIDOS DE UM CLIENTE ESPECÍFICO
-    // =======================================================
     @Transactional(readOnly = true)
     public List<PedidosDeAluguel> buscarPorEmailCliente(String email) {
         return pedidosDeAluguelRepository.findByUsuarioEmail(email);
     }
-
 
     @Transactional
     public PedidosDeAluguel criar(PedidosDeAluguel pedido) {
@@ -79,14 +72,24 @@ public class PedidosDeAluguelService {
         return pedidosDeAluguelRepository.findAll();
     }
 
+    // =======================================================
+    // MÉTODO 'ATUALIZAR' CORRIGIDO E FINAL
+    // =======================================================
     @Transactional
-    public PedidosDeAluguel atualizar(Long id, PedidosDeAluguel dadosAtualizados) {
+    public PedidosDeAluguel atualizar(Long id, PedidosDeAluguelRequestDTO dto) {
         PedidosDeAluguel pedidoExistente = buscarPorId(id);
-        pedidoExistente.setPreco(dadosAtualizados.getPreco());
-        pedidoExistente.setDataEmissao(dadosAtualizados.getDataEmissao());
-        pedidoExistente.setUsuario(dadosAtualizados.getUsuario());
-        pedidoExistente.setAgente(dadosAtualizados.getAgente());
-        pedidoExistente.setAutomovel(dadosAtualizados.getAutomovel());
+
+        // Atualiza apenas os campos que fazem sentido vir de um formulário de edição
+        if (dto.getPreco() != null) {
+            pedidoExistente.setPreco(dto.getPreco());
+        }
+        if (dto.getDataInicio() != null) {
+            pedidoExistente.setDataInicio(dto.getDataInicio());
+        }
+        if (dto.getDataFim() != null) {
+            pedidoExistente.setDataFim(dto.getDataFim());
+        }
+
         return pedidosDeAluguelRepository.save(pedidoExistente);
     }
 

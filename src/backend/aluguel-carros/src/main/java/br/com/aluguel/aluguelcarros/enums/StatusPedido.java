@@ -4,5 +4,6 @@ public enum StatusPedido {
     PENDENTE,
     APROVADO,
     REJEITADO,
-    CANCELADO
+    CANCELADO,
+    FINALIZADO
 }

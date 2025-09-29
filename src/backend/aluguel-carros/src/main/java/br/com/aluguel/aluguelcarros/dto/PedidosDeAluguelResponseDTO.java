@@ -1,11 +1,17 @@
-private PedidosDeAluguelResponseDTO toResponseDTO(PedidosDeAluguel pedido) {
-    return new PedidosDeAluguelResponseDTO(
-            pedido.getId(),
-            pedido.getPreco(),
-            pedido.getDataEmissao(),
-            pedido.getStatus(),
-            pedido.getUsuario() != null ? pedido.getUsuario().getId() : null,
-            pedido.getAgente() != null ? pedido.getAgente().getId() : null,
-            pedido.getAutomovel() != null ? pedido.getAutomovel().getId() : null
-    );
+package br.com.aluguel.aluguelcarros.dto;
+
+import br.com.aluguel.aluguelcarros.model.StatusPedido;
+import java.time.LocalDate;
+
+// DTOs são ideais como 'records' no Java moderno.
+// Eles são imutáveis e já vêm com getters, construtor, equals e hashCode.
+public record PedidosDeAluguelResponseDTO(
+        Long id,
+        String nomeCliente,
+        String infoAutomovel,
+        LocalDate dataInicio,
+        LocalDate dataFim,
+        StatusPedido status
+) {
+    // Um record não precisa de mais nada aqui dentro. O Java cria tudo para você.
 }

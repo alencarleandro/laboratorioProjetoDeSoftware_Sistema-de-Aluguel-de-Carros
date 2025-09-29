@@ -27,19 +27,19 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="cliente : ${clientes}">
-                <td th:text="${cliente.id}">1</td>
-                <td th:text="${cliente.nome}">Nome do Cliente</td>
-                <td th:text="${cliente.cpf}">111.222.333-44</td>
-                <td th:text="${cliente.email}">cliente@email.com</td>
+            <tr th:each="usuario : ${usuarios}">
+                <td th:text="${usuario.id}">1</td>
+                <td th:text="${usuario.nome}">Nome do Cliente</td>
+                <td th:text="${usuario.cpf}">111.222.333-44</td>
+                <td th:text="${usuario.email}">cliente@email.com</td>
                 <td>
-                    <a th:href="@{/admin/clientes/editar/{id}(id=${cliente.id})}" class="btn btn-sm btn-warning">Editar</a>
-                    <a th:href="@{/admin/clientes/excluir/{id}(id=${cliente.id})}"
+                    <a th:href="@{/admin/clientes/editar/{id}(id=${usuario.id})}" class="btn btn-sm btn-warning">Editar</a>
+                    <a th:href="@{/admin/clientes/excluir/{id}(id=${usuario.id})}"
                        class="btn btn-sm btn-danger"
                        onclick="return confirm('Tem certeza que deseja excluir este cliente?');">Excluir</a>
                 </td>
             </tr>
-            <tr th:if="${clientes.isEmpty()}">
+            <tr th:if="${usuarios.isEmpty()}">
                 <td colspan="5" class="text-center">Nenhum cliente cadastrado.</td>
             </tr>
             </tbody>
@@ -50,4 +50,4 @@
 <div th:replace="~{fragments/footer :: footer}"></div>
 <div th:replace="~{fragments/footer :: scripts}"></div>
 </body>
-</html>z
+</html>

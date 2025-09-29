@@ -1,6 +1,5 @@
 package br.com.aluguel.aluguelcarros.model;
 
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,17 +20,20 @@ public class Automovel {
 
     @Column(unique = true, nullable = false)
     private String matricula;
-    @Column(unique = true, nullable = false)
+
+    @Column(nullable = false)
     private int ano;
-    @Column(unique = true, nullable = false)
+
+    @Column(nullable = false)
     private String marca;
-    @Column(unique = true, nullable = false)
+
+    @Column(nullable = false)
     private String modelo;
+
     @Column(unique = true, nullable = false)
     private String placa;
 
     public boolean valido(){
         return true;
     }
-
 }

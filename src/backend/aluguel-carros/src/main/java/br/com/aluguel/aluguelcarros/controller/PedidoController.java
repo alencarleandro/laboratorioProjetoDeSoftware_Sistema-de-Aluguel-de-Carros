@@ -2,7 +2,7 @@ package br.com.aluguel.aluguelcarros.controller;
 
 import br.com.aluguel.aluguelcarros.model.Automovel;
 import br.com.aluguel.aluguelcarros.service.AutomovelService;
-import br.com.aluguel.aluguelcarros.service.PedidoDeAluguelService;
+import br.com.aluguel.aluguelcarros.service.PedidosDeAluguelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,7 +19,7 @@ public class PedidoController {
     private AutomovelService automovelService;
 
     @Autowired
-    private PedidoDeAluguelService pedidoService;
+    private PedidosDeAluguelService pedidoService;
 
     // =======================================================
     // MÉTODOS PARA O CLIENTE
