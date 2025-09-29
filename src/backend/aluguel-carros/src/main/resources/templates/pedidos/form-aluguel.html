@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+
+<div th:replace="~{fragments/header :: head('Solicitar Aluguel')}"></div>
+
+<body>
+<div th:replace="~{fragments/header :: nav}"></div>
+
+<main class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-10 col-xl-8">
+
+            <div th:if="${errorMessage}" class="alert alert-danger" role="alert" th:text="${errorMessage}"></div>
+
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h2>Finalize seu Pedido de Aluguel</h2>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <h4>Veículo Selecionado</h4>
+                            <div class="card">
+                                <img src="https://placehold.co/600x400/EEE/31343C?text=Carro" class="card-img-top" th:alt="${automovel.marca + ' ' + automovel.modelo}">
+                                <div class="card-body">
+                                    <h5 class="card-title" th:text="${automovel.marca + ' ' + automovel.modelo}">Nome do Veículo</h5>
+                                    <p class="card-text mb-0">
+                                        <strong>Ano:</strong> <span th:text="${automovel.ano}">2025</span>
+                                    </p>
+                                    <p class="card-text">
+                                        <strong>Placa:</strong> <span th:text="${automovel.placa}">ABC-1234</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <h4>Escolha o Período</h4>
+                            <form th:action="@{/pedidos/salvar}" method="post">
+                                <input type="hidden" name="automovelId" th:value="${automovel.id}">
+
+                                <div class="mb-3">
+                                    <label for="dataInicio" class="form-label">Data de Retirada</label>
+                                    <input type="date" class="form-control" id="dataInicio" name="dataInicio" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="dataFim" class="form-label">Data de Devolução</label>
+                                    <input type="date" class="form-control" id="dataFim" name="dataFim" required>
+                                </div>
+
+                                <div class="d-grid gap-2">
+                                    <button type="submit" class="btn btn-success btn-lg">Confirmar Pedido</button>
+                                    <a th:href="@{/catalogo-carros}" class="btn btn-secondary">Voltar ao Catálogo</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+<div th:replace="~{fragments/footer :: scripts}"></div>
+</body>
+</html>

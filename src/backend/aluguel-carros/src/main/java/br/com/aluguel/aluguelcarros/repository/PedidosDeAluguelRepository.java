@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PedidosDeAluguelRepository extends JpaRepository<PedidosDeAluguel, Long> {
-    // Métodos customizados podem ser adicionados aqui
+    List<PedidosDeAluguel> findByUsuarioEmail(String email);
 }
